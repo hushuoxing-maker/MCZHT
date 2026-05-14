@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>商业美陈AI提示词 · 设计总监版 | 全风格覆盖</title>
+  <style>
+    :root {
+      --bg: #1a1a1a;
+      --card-bg: #242424;
+      --gold: #c9a45c;
+      --gold-light: #e0c88a;
+      --red: #b03a2e;
+      --text: #f0ead6;
+      --text-secondary: #b8b0a0;
+      --border: #3d3a32;
+      --panel-bg: #2a2a26;
+      --input-bg: #1e1e1c;
+      --font-heading: 'PingFang SC', 'Microsoft YaHei', 'SimHei', sans-serif;
+      --font-body: 'PingFang SC', 'Microsoft YaHei', '楷体', serif;
+      --glass-bg: rgba(30, 30, 28, 0.7);
+      --glass-border: rgba(201, 164, 92, 0.25);
+      --shadow-sm: 0 4px 6px rgba(0,0,0,0.3);
+      --shadow-md: 0 8px 20px rgba(0,0,0,0.5);
+      --shadow-gold: 0 0 12px rgba(201, 164, 92, 0.2);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: radial-gradient(circle at 20% 30%, #2a2318 0%, #1a1714 80%);
+      font-family: var(--font-body);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 24px 16px;
+      backdrop-filter: blur(2px);
+    }
+    .generator-card {
+      max-width: 1760px;
+      width: 100%;
+      background: rgba(36, 36, 34, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 48px;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.7), 0 0 0 1px rgba(201, 164, 92, 0.25), inset 0 1px 0 rgba(255,255,255,0.05);
+      overflow: hidden;
+      border: 1px solid rgba(74, 63, 46, 0.6);
+    }
+    .header {
+      background: linear-gradient(135deg, rgba(45,33,22,0.9) 0%, rgba(59,40,32,0.9) 100%);
+      padding: 28px 40px;
+      color: #f7f0d9;
+      border-bottom: 1px solid rgba(201, 164, 92, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .header h1 {
+      font-size: 30px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      background: linear-gradient(180deg, #f5e7c6 0%, #c9a45c 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+      font-family: var(--font-heading);
+      white-space: nowrap;
+    }
+    .header .subtitle {
+      font-size: 14px;
+      color: #cfc3a6;
+      font-weight: 300;
+      font-style: italic;
+      letter-spacing: 1.5px;
+      background: rgba(201, 164, 92, 0.08);
+      padding: 8px 22px;
+      border-radius: 30px;
+      border: 1px solid rgba(201, 164, 92, 0.35);
+      backdrop-filter: blur(4px);
+    }
+    .main {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    /* 左右对称版式：输入区与输出区等宽 */
+    .input-section {
+      flex: 1;
+      min-width: 460px;
+      background: rgba(42, 42, 38, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 28px 24px;
+      border-right: 1px solid rgba(74, 63, 46, 0.5);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .output-section {
+      flex: 1;
+      min-width: 460px;
+      background: rgba(31, 30, 27, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 28px 30px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .input-section::-webkit-scrollbar { width: 5px; }
+    .input-section::-webkit-scrollbar-track { background: #2a2822; border-radius: 10px; }
+    .input-section::-webkit-scrollbar-thumb { background: #5a5240; border-radius: 10px; }
+    .output-section::-webkit-scrollbar { width: 6px; }
+    .output-section::-webkit-scrollbar-track { background: #2a2822; border-radius: 10px; }
+    .output-section::-webkit-scrollbar-thumb { background: #5a5240; border-radius: 10px; }
+
+    .section-title {
+      font-size: 17px;
+      font-weight: 500;
+      color: #ecd69b;
+      padding-bottom: 10px;
+      border-bottom: 1.5px solid rgba(201, 164, 92, 0.35);
+      font-family: var(--font-heading);
+      letter-spacing: 1.8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .btn-group-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: #c4b393;
+      margin-bottom: 6px;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      opacity: 0.9;
+    }
+    .btn-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .opt-btn {
+      padding: 9px 16px;
+      font-size: 12px;
+      background: rgba(30, 30, 28, 0.6);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(90, 80, 64, 0.7);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      font-family: var(--font-body);
+      color: #c4b393;
+      white-space: nowrap;
+      user-select: none;
+      outline: none;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .opt-btn:hover {
+      border-color: #c9a45c;
+      color: #e5c67a;
+      background: rgba(201, 164, 92, 0.12);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    }
+    .opt-btn.selected {
+      background: linear-gradient(135deg, #c9a45c, #b8943a);
+      color: #1e1b16;
+      border-color: #c9a45c;
+      font-weight: 600;
+      box-shadow: 0 0 16px rgba(201, 164, 92, 0.5);
+      text-shadow: 0 1px 2px rgba(255,255,255,0.2);
+    }
+    .opt-btn.series-btn {
+      padding: 10px 18px;
+      font-size: 13px;
+      border-radius: 24px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+    .opt-btn.sub-btn {
+      font-size: 11px;
+      padding: 8px 14px;
+      border-radius: 18px;
+    }
+    .collapse-header {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      user-select: none;
+    }
+    .collapse-header .arrow {
+      transition: transform 0.3s ease;
+      font-size: 14px;
+      color: #c9a45c;
+    }
+    .collapse-header.open .arrow { transform: rotate(90deg); }
+    .collapse-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .collapse-body.expanded { max-height: 800px; }
+    .input-row {
+      display: flex;
+      gap: 12px;
+      align-items: flex-end;
+      flex-wrap: wrap;
+    }
+    .input-field {
+      flex: 1;
+      min-width: 140px;
+    }
+    .input-field label {
+      display: block;
+      font-size: 11px;
+      color: #c4b393;
+      margin-bottom: 4px;
+      letter-spacing: 0.5px;
+    }
+    .input-field input {
+      width: 100%;
+      padding: 12px 14px;
+      font-size: 14px;
+      background: rgba(30, 30, 28, 0.8);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(74, 64, 48, 0.7);
+      border-radius: 24px;
+      font-family: var(--font-body);
+      color: #e6ddc5;
+      outline: none;
+      transition: 0.25s;
+    }
+    .input-field input:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(201, 164, 92, 0.15);
+      background: #24241f;
+    }
+    .lock-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 6px;
+      color: #c4b393;
+      font-size: 12px;
+    }
+    .lock-option input[type="checkbox"] { width: 16px; height: 16px; accent-color: var(--gold); }
+    .generate-btn {
+      background: linear-gradient(135deg, #c94f33 0%, #a83524 100%);
+      border: none;
+      width: 100%;
+      padding: 18px;
+      font-size: 22px;
+      font-weight: 600;
+      color: #fff6e5;
+      letter-spacing: 5px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid var(--gold);
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+      font-family: var(--font-heading);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.4), 0 0 20px rgba(201, 164, 92, 0.2);
+      margin-top: 8px;
+    }
+    .generate-btn:hover {
+      background: linear-gradient(135deg, #dc5a3d 0%, #b8402a 100%);
+      transform: translateY(-2px);
+      box-shadow: 0 18px 32px rgba(180, 100, 50, 0.35);
+      border-bottom-color: #e6c97e;
+    }
+    .output-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .output-header h2 {
+      font-size: 22px;
+      font-weight: 500;
+      color: #e5d5a5;
+      font-family: var(--font-heading);
+      letter-spacing: 2px;
+    }
+    .badge {
+      background: rgba(62, 53, 36, 0.7);
+      backdrop-filter: blur(8px);
+      color: #e5c67a;
+      padding: 8px 22px;
+      border-radius: 28px;
+      font-size: 14px;
+      font-weight: 600;
+      border: 1px solid rgba(107, 90, 57, 0.7);
+    }
+    .prompts-grid { display: flex; flex-direction: column; gap: 14px; }
+    .prompt-item {
+      background: rgba(43, 42, 36, 0.8);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(68, 62, 47, 0.6);
+      border-radius: 28px;
+      padding: 22px 26px 18px;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.4);
+      display: flex;
+      flex-direction: column;
+    }
+    .prompt-item:hover {
+      border-color: #c9a45c;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.6), 0 0 20px rgba(201, 164, 92, 0.2);
+      background: rgba(48, 46, 39, 0.9);
+      transform: translateY(-2px);
+    }
+    .prompt-number {
+      font-size: 13px;
+      font-weight: 600;
+      color: #e5c67a;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      background: rgba(59, 53, 36, 0.8);
+      display: inline-block;
+      padding: 6px 18px;
+      border-radius: 22px;
+      border: 1px solid rgba(104, 95, 62, 0.7);
+      align-self: flex-start;
+    }
+    .prompt-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #d9d0b5;
+      margin-bottom: 14px;
+      word-break: break-word;
+      flex: 1;
+      user-select: text;
+    }
+    .prompt-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    .meta-tag {
+      font-size: 11px;
+      padding: 4px 12px;
+      border-radius: 14px;
+      background: rgba(201, 164, 92, 0.12);
+      color: #b8a87a;
+      border: 1px solid rgba(201, 164, 92, 0.3);
+      white-space: nowrap;
+    }
+    .copy-btn {
+      background: transparent;
+      color: #c9a45c;
+      border: 1px solid rgba(201, 164, 92, 0.7);
+      border-radius: 24px;
+      padding: 8px 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      letter-spacing: 0.6px;
+      align-self: flex-start;
+      user-select: none;
+      outline: none;
+      backdrop-filter: blur(4px);
+    }
+    .copy-btn:hover { background: #c9a45c; color: #1e1b16; box-shadow: 0 0 12px rgba(201, 164, 92, 0.5); }
+    .copy-btn:active { transform: scale(0.96); }
+    .copy-btn.copied { background: #4a7c59; color: #f0f2e9; border-color: #5a8f68; pointer-events: none; }
+    .footer-note {
+      margin-top: 24px;
+      font-size: 13px;
+      color: #9b927a;
+      text-align: right;
+      border-top: 1px solid rgba(61, 56, 40, 0.6);
+      padding-top: 18px;
+      font-style: italic;
+      letter-spacing: 0.6px;
+    }
+    .extra-output {
+      margin-top: 18px;
+      background: rgba(38, 36, 30, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 20px;
+      padding: 18px 22px;
+      border: 1px dashed rgba(74, 64, 48, 0.7);
+    }
+    .extra-output h4 { color: #e5c67a; font-size: 14px; margin-bottom: 8px; letter-spacing: 1px; }
+    .extra-output p { color: #b8b0a0; font-size: 12px; line-height: 1.7; }
+    /* 响应式：窄屏时上下堆叠，仍保持全宽 */
+    @media (max-width: 960px) {
+      .input-section { flex: 1 1 100%; min-width: 100%; border-right: none; border-bottom: 1px solid rgba(74,63,46,0.5); }
+      .output-section { flex: 1 1 100%; min-width: 100%; }
+      .header h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+<div class="generator-card">
+  <div class="header">
+    <h1>🏮 商业美陈AI提示词 · 设计总监版</h1>
+    <span class="subtitle">正立面视角 · 20组方案 · 全风格覆盖</span>
+  </div>
+  <div class="main">
+    <!-- 输入区 (左侧) -->
+    <div class="input-section" id="inputPanel">
+      <div>
+        <div class="section-title"><span>🏷️</span> 品牌与主题</div>
+        <div class="input-row">
+          <div class="input-field">
+            <label>🎯 品牌名称</label>
+            <input type="text" id="brandInput" value="万象天地" placeholder="输入品牌名称">
+          </div>
+          <div class="input-field">
+            <label>✨ 主题名称</label>
+            <input type="text" id="themeInput" value="纳福迎祥 · 富贵满堂" placeholder="输入美陈主题">
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title"><span>🎨</span> 风格系列</div>
+        <div class="btn-row" id="seriesBtns"></div>
+      </div>
+      <div id="subStyleBlock">
+        <div class="section-title"><span>📌</span> 具体风格</div>
+        <div class="btn-row" id="subStyleBtns"></div>
+      </div>
+      <div>
+        <div class="section-title"><span>🏢</span> 场地背景</div>
+        <div class="btn-row" id="venueBtns"></div>
+      </div>
+      <div id="elementsBlock">
+        <div class="section-title"><span>🎎</span> 核心元素 <span style="font-size:11px;color:#9b927a;">(点击选择)</span></div>
+        <div class="btn-row" id="elementsBtns"></div>
+      </div>
+      <div>
+        <div class="section-title"><span>🌈</span> 色彩倾向</div>
+        <div class="btn-row" id="colorBtns"></div>
+      </div>
+      <div>
+        <div class="collapse-header" id="materialHeader">
+          <span class="section-title" style="border-bottom:none;padding-bottom:0;"><span>🔩</span> 材质选择</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapse-body expanded" id="materialBody">
+          <div class="btn-row" id="materialBtns" style="margin-top:8px;"></div>
+        </div>
+      </div>
+      <div>
+        <div class="collapse-header" id="lightHeader">
+          <span class="section-title" style="border-bottom:none;padding-bottom:0;"><span>💡</span> 灯光系统</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapse-body" id="lightBody">
+          <div class="btn-row" id="lightBtns" style="margin-top:8px;"></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-title"><span>🏗️</span> 结构形式</div>
+        <div class="btn-row" id="structureBtns"></div>
+      </div>
+      <div>
+        <div class="section-title"><span>🎮</span> 互动形式偏好</div>
+        <div class="btn-row" id="interactionPrefBtns"></div>
+      </div>
+      <div>
+        <div class="section-title"><span>📋</span> 内容选择</div>
+        <div class="btn-row" id="contentTypeBtns"></div>
+      </div>
+      <div>
+        <div class="section-title"><span>📐</span> 尺寸设定</div>
+        <div class="input-row">
+          <div class="input-field"><label>宽度 (米)</label><input type="number" id="widthInput" value="10.0" step="0.1" min="1.0" max="50.0"></div>
+          <div class="input-field"><label>高度 (米)</label><input type="number" id="heightInput" value="5.63" step="0.01" min="0.5" max="30.0"></div>
+        </div>
+        <div class="lock-option">
+          <input type="checkbox" id="lockRatio" checked>
+          <label for="lockRatio">锁定 16:9 宽屏比例</label>
+        </div>
+      </div>
+      <div>
+        <div class="collapse-header" id="advancedHeader">
+          <span class="section-title" style="border-bottom:none;padding-bottom:0;"><span>🤖</span> AI高级模块</span>
+          <span class="arrow">▶</span>
+        </div>
+        <div class="collapse-body" id="advancedBody">
+          <div style="margin-top:8px;display:flex;flex-direction:column;gap:8px;">
+            <div class="btn-group-label">📖 故事线主题</div>
+            <div class="btn-row" id="storyBtns"></div>
+            <div class="btn-group-label" style="margin-top:4px;">🎮 互动玩法</div>
+            <div class="btn-row" id="interactBtns"></div>
+            <div class="btn-group-label" style="margin-top:4px;">💰 成本维度</div>
+            <div class="btn-row" id="budgetBtns"></div>
+            <div class="btn-group-label" style="margin-top:4px;">🔧 安装维度</div>
+            <div class="btn-row" id="installBtns"></div>
+            <div class="btn-group-label" style="margin-top:4px;">🕐 时间维度</div>
+            <div class="btn-row" id="timeBtns"></div>
+          </div>
+        </div>
+      </div>
+      <button class="generate-btn" id="generateBtn">✨ 生成 20 组提示词 ✨</button>
+    </div>
+    <!-- 输出区 (右侧) -->
+    <div class="output-section" id="outputSection">
+      <div class="output-header">
+        <h2>🎐 正立面美陈 · AI绘画提示词</h2>
+        <span class="badge" id="countDisplay">0 / 20</span>
+      </div>
+      <div class="prompts-grid" id="promptsList">
+        <div class="prompt-item" style="background:#26241e;text-align:center;padding:40px;align-items:center;">
+          <div class="prompt-number">🏮 等待生成</div>
+          <div class="prompt-text" style="color:#aa9f84;text-align:center;">选择风格系列与参数后，点击生成按钮</div>
+        </div>
+      </div>
+      <div class="footer-note">
+        ⚡ 每组独立设计 · 主色≤3 · 材质反差 · 留白≥30% · 含打卡锚点 · 含施工逻辑
+      </div>
+      <div class="extra-output" id="extraOutput" style="display:none;">
+        <h4>📋 批量施工摘要</h4>
+        <p id="extraContent"></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  (function() {
+    // ========== 数据定义 ==========
+    const seriesData = {
+      '国风系': {
+        subs: ['传统吉祥','国潮','新中式','宋式美学','唐风','东方禅意','古典宫廷','非遗风','山海经风','汉服风','戏曲风','水墨风','国风赛博'],
+        defaultColor: '中国红、鎏金、米白',
+        defaultMaterial: '亚克力+金色镂空金属板+木质',
+        defaultLight: '暖黄灯带+内透光+轮廓光',
+      },
+      '商业潮流系': {
+        subs: ['潮玩','年轻化潮流','朋克','涂鸦','街头艺术','Y2K','解构主义','未来科技','赛博朋克','蒸汽朋克','AI数字艺术','NFT视觉风'],
+        defaultColor: '霓虹紫、电光蓝、银色',
+        defaultMaterial: '镜面金属+LED屏+镭射膜',
+        defaultLight: '霓虹灯+动态灯光+激光灯',
+      },
+      '卡通IP系': {
+        subs: ['卡通','Q版','二次元','泡泡玛特风','治愈系','萌宠系','童话系','儿童互动','动漫IP','盲盒风','乐园风'],
+        defaultColor: '马卡龙粉、天蓝、奶油黄',
+        defaultMaterial: 'PVC+气模+软包布艺',
+        defaultLight: '呼吸灯+点光源+柔光',
+      },
+      '节庆主题系': {
+        subs: ['春节','元宵','中秋','端午','七夕','圣诞','万圣节','情人节','跨年','开学季','毕业季','店庆','周年庆'],
+        defaultColor: '中国红、金色、明黄',
+        defaultMaterial: '亚克力+KT板+发光灯箱',
+        defaultLight: '暖黄灯带+投影灯+点光源',
+      },
+      '艺术装置系': {
+        subs: ['极简艺术','镜面艺术','几何艺术','光影艺术','装置艺术','沉浸式','互动艺术','数字媒体艺术','AI光影','参数化设计'],
+        defaultColor: '白色、银色、透明',
+        defaultMaterial: '镜面不锈钢+全息膜+发光树脂',
+        defaultLight: '投影灯+AI互动灯+光影秀',
+      },
+      '自然生态系': {
+        subs: ['森林系','花艺系','热带植物','海洋系','星空宇宙','沙漠风','冰雪风','自然疗愈','可持续环保','原木生态'],
+        defaultColor: '绿色、白色、木色',
+        defaultMaterial: '仿真花艺+原木+编织材料',
+        defaultLight: '氛围灯+洗墙灯+暖光',
+      },
+      '民族文化系': {
+        subs: ['苗族','藏族','蒙古族','傣族','敦煌','西域','少数民族图腾','民俗文化','地域文化'],
+        defaultColor: '民族彩、金色、深红',
+        defaultMaterial: '布艺+木结构+编织材料',
+        defaultLight: '暖黄灯带+点光源+氛围灯',
+      },
+      '引流型': {
+        subs: ['打卡传播型','互动型','微互动型','商业转化型','快闪活动型','发布会活动型','品牌展示型','夜景灯光型','短视频传播型','小红书出片型','抖音直播型'],
+        defaultColor: '高饱和撞色、金色、白色',
+        defaultMaterial: 'LED屏+镜面金属+霓虹灯',
+        defaultLight: '动态灯光+地面投影+激光灯',
+      },
+    };
+
+    const venueList = ['购物中心外广场','商场中庭挑空区','商业街主入口','酒店大堂背景墙','写字楼前台大厅','社区中心广场','文化街区入口','景区游客中心','会展中心序厅','机场出发大厅','高铁站候车厅','博物馆入口大厅','干净米白纯色背景','深灰纯色背景','深夜蓝纯色背景','品牌旗舰店入口'];
+    const materialList = ['亚克力','不锈钢','镜面金属','KT板','PVC','发光灯箱','木结构','玻璃钢','LED屏','霓虹灯','气模','仿真花艺','编织材料','竹艺','布艺','纸艺','镭射膜','镜面电镀','半透材质','全息膜','水波纹不锈钢','发光树脂','数字屏幕','AI动态屏'];
+    const lightList = ['氛围灯','点光源','洗墙灯','投影灯','激光灯','动态灯光','呼吸灯','AI互动灯','地面投影','光影秀','轮廓暖黄灯带','内透光','霓虹灯带'];
+    const structureList = ['门头式','拱门式','岛台式','悬挂式','包围式','长廊式','巨型装置','微型装置','可移动装置','模块化装置'];
+
+    const colorOptions = [
+      { label:'🔥 红金/米白', value:'中国红、鎏金、米白' },{ label:'🏮 红金/明黄', value:'中国红、金色、明黄' },
+      { label:'🌿 绿/白/淡黄', value:'绿色、白色、淡黄' },{ label:'🐉 绿/红/米白', value:'绿色、红色、米白' },
+      { label:'💕 粉紫/白', value:'粉色、紫色、白色' },{ label:'🌕 橙金/米白', value:'橙色、金色、米白' },
+      { label:'❄️ 白/蓝/银', value:'白色、蓝色、银色' },{ label:'💝 粉/红/白', value:'粉色、红色、白色' },
+      { label:'🎄 红/绿/金', value:'红色、绿色、金色' },{ label:'🎉 金/红/白', value:'金色、红色、白色' },
+      { label:'🇨🇳 红/金/黄', value:'红色、金色、黄色' },{ label:'👶 彩/粉/蓝', value:'彩色、粉色、天蓝' },
+      { label:'📚 金/白/绿', value:'金色、白色、绿色' },{ label:'💪 红/金/白', value:'红色、金色、白色' },
+      { label:'🦃 橙/棕/金', value:'橙色、棕色、金色' },{ label:'🌊 霓虹紫/电光蓝', value:'霓虹紫、电光蓝、银色' },
+      { label:'🍬 马卡龙粉/天蓝', value:'马卡龙粉、天蓝、奶油黄' },{ label:'🖤 黑金高级', value:'黑色、金色、深灰' },
+      { label:'🤍 奶油色/白', value:'奶油色、白色、浅木色' },{ label:'💜 赛博霓虹', value:'霓虹紫、青色、暗黑底' }
+    ];
+
+    const interactionPreferences = ['打卡拍照优先','沉浸体验优先','游戏互动优先','AR/VR优先','社交分享优先','亲子互动优先','品牌互动优先'];
+    const contentTypes = ['品牌故事展示','产品/新品发布','节日祝福与促销','文化科普教育','艺术美学欣赏','社区互动活动','快闪主题活动'];
+
+    const storyThemes = ['东方神话','时间隧道','未来城市','山海秘境','梦幻仙境','星际穿越','古风雅集','城市记忆'];
+    const interactModes = ['扫码抽奖','AI换脸','灯光感应','情绪互动','触摸感应','声音互动','体感游戏','AR合影'];
+    const budgetLevels = ['低预算(≤5万)','中预算(5-20万)','高预算(20万+)','快闪低成本(≤3万)','高端定制(50万+)'];
+    const installModes = ['可拆卸','重复利用','快速搭建','防雨','防风','防火','模块化组装','免工具安装'];
+    const timeModes = ['白天效果','夜景效果','四季变化','节庆切换','日夜双模式'];
+
+    const festivalElementMap = {
+      '春节':['祥云·如意·铜钱纹·瑞兽·牡丹·灯笼·窗棂纹','福字·中国结·元宝·祥云·灯笼·梅花','鞭炮·祥云·金桔·如意·福袋·瑞兽','春联·窗花·灯笼·牡丹·祥云·锦鲤'],
+      '元宵':['灯笼·汤圆·祥云·如意·灯谜条·舞狮','花灯·元宵·祥云·兔子灯·谜语签·中国结'],
+      '中秋':['月亮·玉兔·桂花·祥云·团圆·灯笼','明月·嫦娥·玉兔·桂花树·月饼·祥云'],
+      '端午':['龙舟·粽子·艾草·祥云·波浪·香囊','龙舟·粽叶·雄黄酒·祥云·菖蒲·五色丝线'],
+      '七夕':['鹊桥·祥云·喜鹊·月亮·红线·花朵','银河·喜鹊·牛郎织女·祥云·星星·红线'],
+      '圣诞':['圣诞树·雪花·礼物·铃铛·驯鹿·星星','雪人·雪花·礼物·圣诞老人·铃铛·彩球'],
+      '万圣节':['南瓜灯·幽灵·蝙蝠·蜘蛛网·糖果·月亮','骷髅·南瓜·黑猫·蜘蛛网·蜡烛·糖果'],
+      '情人节':['爱心·玫瑰·祥云·巧克力·红线·天使','玫瑰·爱心·祥云·钻戒·巧克力·丘比特'],
+      '跨年':['烟花·时钟·祥云·灯笼·新年·彩带','倒计时·烟花·祥云·气球·礼花·时钟'],
+      '店庆':['蛋糕·礼盒·彩带·气球·奖杯·烟花','周年·蛋糕·彩带·气球·礼物·烟花'],
+      '周年庆':['数字·蛋糕·礼盒·彩带·气球·烟花','庆典·蛋糕·礼花·气球·奖杯·彩带'],
+    };
+    const defaultElementsMap = {
+      '国风系':['祥云·如意·铜钱纹·瑞兽·牡丹·灯笼','福字·中国结·元宝·祥云·梅花'],
+      '商业潮流系':['霓虹灯管·几何图形·镜面碎片·荧光涂鸦·LED矩阵','潮流符号·波普图案·金属链·亚克力板·镭射面'],
+      '卡通IP系':['卡通角色·气泡·星星·彩虹·糖果·花朵','萌宠·云朵·爱心·棒棒糖·气球·小屋'],
+      '节庆主题系':['灯笼·彩带·烟花·祥云·礼物·气球','节日符号·彩灯·花环·丝带·糖果·星星'],
+      '艺术装置系':['几何体·镜面·光线·抽象形·透明材·光影','极简线条·反射面·光柱·悬浮体·渐变色彩'],
+      '自然生态系':['花朵·树叶·藤蔓·蝴蝶·流水·石头','树木·草坪·花瓣·小鸟·阳光·溪流'],
+      '民族文化系':['民族图腾·刺绣纹·银饰·彩带·鼓·羽饰','传统纹样·织锦·铜鼓·经幡·哈达'],
+      '引流型':['打卡框·霓虹字·镜面·互动屏·灯光隧道','网红元素·发光翅膀·秋千·花墙·灯光装置'],
+    };
+
+    // DOM
+    const seriesBtnsDiv = document.getElementById('seriesBtns');
+    const subStyleBtnsDiv = document.getElementById('subStyleBtns');
+    const subStyleBlock = document.getElementById('subStyleBlock');
+    const venueBtnsDiv = document.getElementById('venueBtns');
+    const elementsBtnsDiv = document.getElementById('elementsBtns');
+    const elementsBlock = document.getElementById('elementsBlock');
+    const colorBtnsDiv = document.getElementById('colorBtns');
+    const materialBtnsDiv = document.getElementById('materialBtns');
+    const lightBtnsDiv = document.getElementById('lightBtns');
+    const structureBtnsDiv = document.getElementById('structureBtns');
+    const interactionPrefBtnsDiv = document.getElementById('interactionPrefBtns');
+    const contentTypeBtnsDiv = document.getElementById('contentTypeBtns');
+    const storyBtnsDiv = document.getElementById('storyBtns');
+    const interactBtnsDiv = document.getElementById('interactBtns');
+    const budgetBtnsDiv = document.getElementById('budgetBtns');
+    const installBtnsDiv = document.getElementById('installBtns');
+    const timeBtnsDiv = document.getElementById('timeBtns');
+    const brandInput = document.getElementById('brandInput');
+    const themeInput = document.getElementById('themeInput');
+    const widthInput = document.getElementById('widthInput');
+    const heightInput = document.getElementById('heightInput');
+    const lockRatioCheck = document.getElementById('lockRatio');
+    const generateBtn = document.getElementById('generateBtn');
+    const promptsListDiv = document.getElementById('promptsList');
+    const countDisplay = document.getElementById('countDisplay');
+    const extraOutput = document.getElementById('extraOutput');
+    const extraContent = document.getElementById('extraContent');
+    let currentPrompts = [];
+
+    // 状态
+    let selectedSeries = '国风系';
+    let selectedSubStyle = '传统吉祥';
+    let selectedVenue = '购物中心外广场';
+    let selectedElements = '祥云·如意·铜钱纹·瑞兽·牡丹·灯笼';
+    let selectedColor = '中国红、鎏金、米白';
+    let selectedMaterial = '亚克力+金色镂空金属板+木质';
+    let selectedLight = '暖黄灯带+内透光+轮廓光';
+    let selectedStructure = '岛台式';
+    let selectedInteractionPref = '打卡拍照优先';
+    let selectedContentType = '品牌故事展示';
+    let selectedStory = '东方神话';
+    let selectedInteract = '灯光感应';
+    let selectedBudget = '中预算(5-20万)';
+    let selectedInstall = '可拆卸';
+    let selectedTime = '白天效果';
+
+    // 渲染函数
+    function renderSeriesBtns() {
+      seriesBtnsDiv.innerHTML = Object.keys(seriesData).map(s => `<button class="opt-btn series-btn${s===selectedSeries?' selected':''}" data-value="${s}">${s}</button>`).join('');
+    }
+    function renderSubStyleBtns() {
+      const subs = seriesData[selectedSeries]?.subs || [];
+      if(subs.length<=1){ subStyleBlock.style.display='none'; return; }
+      subStyleBlock.style.display='block';
+      subStyleBtnsDiv.innerHTML = subs.map(s => `<button class="opt-btn sub-btn${s===selectedSubStyle?' selected':''}" data-value="${s}">${s}</button>`).join('');
+    }
+    function renderVenueBtns(){ venueBtnsDiv.innerHTML = venueList.map(v=>`<button class="opt-btn${v===selectedVenue?' selected':''}" data-value="${v}">${v}</button>`).join(''); }
+    function renderElementsBtns(){
+      const opts = festivalElementMap[selectedSubStyle] || defaultElementsMap[selectedSeries] || ['祥云·如意·灯笼'];
+      elementsBtnsDiv.innerHTML = opts.map(e=>`<button class="opt-btn${e===selectedElements?' selected':''}" data-value="${e}" title="${e}">${e.length>22?e.substring(0,22)+'…':e}</button>`).join('');
+      elementsBlock.style.display='block';
+    }
+    function renderColorBtns(){ colorBtnsDiv.innerHTML = colorOptions.map(c=>`<button class="opt-btn${c.value===selectedColor?' selected':''}" data-value="${c.value}">${c.label}</button>`).join(''); }
+    function renderMaterialBtns(){ materialBtnsDiv.innerHTML = materialList.map(m=>`<button class="opt-btn${m===selectedMaterial?' selected':''}" data-value="${m}">${m}</button>`).join(''); }
+    function renderLightBtns(){ lightBtnsDiv.innerHTML = lightList.map(l=>`<button class="opt-btn${l===selectedLight?' selected':''}" data-value="${l}">${l}</button>`).join(''); }
+    function renderStructureBtns(){ structureBtnsDiv.innerHTML = structureList.map(s=>`<button class="opt-btn${s===selectedStructure?' selected':''}" data-value="${s}">${s}</button>`).join(''); }
+    function renderInteractionPrefBtns(){ interactionPrefBtnsDiv.innerHTML = interactionPreferences.map(p=>`<button class="opt-btn${p===selectedInteractionPref?' selected':''}" data-value="${p}">${p}</button>`).join(''); }
+    function renderContentTypeBtns(){ contentTypeBtnsDiv.innerHTML = contentTypes.map(c=>`<button class="opt-btn${c===selectedContentType?' selected':''}" data-value="${c}">${c}</button>`).join(''); }
+    function renderStoryBtns(){ storyBtnsDiv.innerHTML = storyThemes.map(s=>`<button class="opt-btn${s===selectedStory?' selected':''}" data-value="${s}">${s}</button>`).join(''); }
+    function renderInteractBtns(){ interactBtnsDiv.innerHTML = interactModes.map(m=>`<button class="opt-btn${m===selectedInteract?' selected':''}" data-value="${m}">${m}</button>`).join(''); }
+    function renderBudgetBtns(){ budgetBtnsDiv.innerHTML = budgetLevels.map(b=>`<button class="opt-btn${b===selectedBudget?' selected':''}" data-value="${b}">${b}</button>`).join(''); }
+    function renderInstallBtns(){ installBtnsDiv.innerHTML = installModes.map(i=>`<button class="opt-btn${i===selectedInstall?' selected':''}" data-value="${i}">${i}</button>`).join(''); }
+    function renderTimeBtns(){ timeBtnsDiv.innerHTML = timeModes.map(t=>`<button class="opt-btn${t===selectedTime?' selected':''}" data-value="${t}">${t}</button>`).join(''); }
+
+    function refreshAllButtons(){
+      renderSeriesBtns(); renderSubStyleBtns(); renderVenueBtns(); renderElementsBtns();
+      renderColorBtns(); renderMaterialBtns(); renderLightBtns(); renderStructureBtns();
+      renderInteractionPrefBtns(); renderContentTypeBtns();
+      renderStoryBtns(); renderInteractBtns(); renderBudgetBtns(); renderInstallBtns(); renderTimeBtns();
+      bindAllEvents();
+    }
+
+    function bindAllEvents(){
+      seriesBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedSeries=btn.dataset.value; const d=seriesData[selectedSeries]; selectedSubStyle=d.subs[0]; selectedColor=d.defaultColor; selectedMaterial=d.defaultMaterial; selectedLight=d.defaultLight; const eOpts=festivalElementMap[selectedSubStyle]||defaultElementsMap[selectedSeries]||['祥云·如意·灯笼']; selectedElements=eOpts[0]; refreshAllButtons(); }); });
+      subStyleBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedSubStyle=btn.dataset.value; const eOpts=festivalElementMap[selectedSubStyle]||defaultElementsMap[selectedSeries]||['祥云·如意·灯笼']; selectedElements=eOpts[0]; refreshAllButtons(); }); });
+      venueBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedVenue=btn.dataset.value; refreshAllButtons(); }); });
+      elementsBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedElements=btn.dataset.value; refreshAllButtons(); }); });
+      colorBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedColor=btn.dataset.value; refreshAllButtons(); }); });
+      materialBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedMaterial=btn.dataset.value; refreshAllButtons(); }); });
+      lightBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedLight=btn.dataset.value; refreshAllButtons(); }); });
+      structureBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedStructure=btn.dataset.value; refreshAllButtons(); }); });
+      interactionPrefBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedInteractionPref=btn.dataset.value; refreshAllButtons(); }); });
+      contentTypeBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedContentType=btn.dataset.value; refreshAllButtons(); }); });
+      storyBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedStory=btn.dataset.value; refreshAllButtons(); }); });
+      interactBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedInteract=btn.dataset.value; refreshAllButtons(); }); });
+      budgetBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedBudget=btn.dataset.value; refreshAllButtons(); }); });
+      installBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedInstall=btn.dataset.value; refreshAllButtons(); }); });
+      timeBtnsDiv.querySelectorAll('button').forEach(btn=>{ btn.addEventListener('click',()=>{ selectedTime=btn.dataset.value; refreshAllButtons(); }); });
+    }
+
+    function setupCollapse(headerId, bodyId){
+      const h=document.getElementById(headerId), b=document.getElementById(bodyId);
+      if(!h||!b) return;
+      h.addEventListener('click',()=>{ const open=b.classList.contains('expanded'); if(open){ b.classList.remove('expanded'); h.classList.remove('open'); } else { b.classList.add('expanded'); h.classList.add('open'); } });
+    }
+
+    function syncSize(source){
+      if(!lockRatioCheck.checked) return;
+      const w=parseFloat(widthInput.value), h=parseFloat(heightInput.value);
+      if(source==='width'&&!isNaN(w)) heightInput.value=(w/1.777).toFixed(2);
+      else if(source==='height'&&!isNaN(h)) widthInput.value=(h*1.777).toFixed(1);
+    }
+    widthInput.addEventListener('input',()=>syncSize('width'));
+    heightInput.addEventListener('input',()=>syncSize('height'));
+    lockRatioCheck.addEventListener('change',()=>{ if(lockRatioCheck.checked) syncSize('width'); });
+
+    function setLoading(){
+      promptsListDiv.innerHTML='<div class="prompt-item" style="background:#26241e;text-align:center;padding:40px;"><div class="prompt-number">🏮 ⏳</div><div class="prompt-text" style="color:#aa9f84;">设计总监正在构思20组方案…</div></div>';
+      countDisplay.innerText='0/20'; extraOutput.style.display='none';
+    }
+
+    async function performCopy(text){
+      if(navigator.clipboard?.writeText) { try{ await navigator.clipboard.writeText(text); return true; }catch(e){} }
+      try{ const ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;left:-9999px;'; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta); return true; }catch(e){}
+      return false;
+    }
+    function setupCopyButtons(){
+      document.querySelectorAll('.copy-btn').forEach(btn=>{
+        const newBtn=btn.cloneNode(true); btn.parentNode.replaceChild(newBtn,btn);
+        newBtn.addEventListener('click',async function(e){
+          e.preventDefault();
+          const idx=parseInt(this.dataset.index,10);
+          if(isNaN(idx)||idx<0||idx>=currentPrompts.length){ alert('请重新生成'); return; }
+          const text=currentPrompts[idx]; this.disabled=true; const orig=this.innerHTML;
+          const ok=await performCopy(text);
+          if(ok){ this.innerHTML='✓ 已复制'; this.classList.add('copied'); setTimeout(()=>{ this.innerHTML=orig; this.classList.remove('copied'); this.disabled=false; },2000); }
+          else { this.innerHTML='📋 已选中，Ctrl+C复制'; this.classList.add('copied'); setTimeout(()=>{ this.innerHTML=orig; this.classList.remove('copied'); this.disabled=false; },3000); }
+        });
+      });
+    }
+
+    function generatePrompts(p){
+      const {brand, theme, series, subStyle, venue, elements, colors, material, light, structure, interactionPref, contentType, story, interact, budget, install, time, userW, userH} = p;
+      const elemList = elements.split(/[·,，\s\n]+/).filter(w=>w.trim());
+      const mainElem = elemList[0]||'吉祥纹样';
+      const subElemStr = elemList.length>1?elemList.slice(1).join('、'):mainElem;
+      const allElems = elemList.join('、');
+      const bg = venue||'干净米白纯色背景';
+      let fW,fH;
+      if(userW&&!isNaN(userW)&&userW>0){ fW=parseFloat(userW).toFixed(1); fH=(userH&&!isNaN(userH)&&userH>0)?parseFloat(userH).toFixed(2):(fW/1.777).toFixed(2); }
+      else { fW=(Math.floor(Math.random()*5)+8).toFixed(1); fH=(fW/1.777).toFixed(2); }
+      const dims=`装置总宽度${fW}米，高度${fH}米，严格16:9宽屏比例`;
+      const brandText = brand ? `品牌“${brand}”` : '';
+      const designs = [
+        { name:'牌楼迎祥', desc:`仿古牌楼造型，八根红色亚克力圆柱横向排列，柱身浮雕${mainElem}纹样，横梁整铺金色镂空${subElemStr}板，中央鎏金牌匾悬嵌${brandText}主题"${theme}"，地面圆形镜面地毯倒映暖黄灯光`, mat:material||'红色亚克力+金色镂空金属板+镜面地毯', lit:light||'轮廓暖黄灯带+内透光' },
+        { name:'画卷纳福', desc:`巨型画卷横向展开，两端立体${mainElem}泡沫雕塑，画卷表面满印${subElemStr}吉祥图案，画心凹入安装亚克力发光字"${theme}"${brandText}，背景留白米灰色`, mat:'UV喷绘PVC板+泡沫雕塑+亚克力发光字', lit:'背光柔光+字体内发光' },
+        { name:'宫灯连廊', desc:`十盏传统宫灯横向连排，灯面镂空${mainElem}与${subElemStr}纹样，灯内暖光透出，灯间红色绸带相连，中央放大宫灯突出${brandText}主题"${theme}"`, mat:'金属骨架+红色亚克力镂空+写真布绸带', lit:'内发光+轮廓光' },
+        { name:'窗棂格韵', desc:`整面海棠纹窗棂格栅横向铺满，深红木质格栅间贴金箔${mainElem}纹饰，中心留白区域安装亚克力发光字"${theme}"${brandText}`, mat:'木质格栅+金箔贴片+亚克力透光板', lit:'背光柔光+点状金箔反光' },
+        { name:'流云飘带', desc:`抽象${mainElem}飘带造型，轻质PVC立体雕刻红色渐变叠加金色描边，云头托起${brandText}主题字板"${theme}"，大面积天空留白`, mat:'高密度PVC雕刻+汽车漆渐变+不锈钢描边字', lit:'轮廓光+渐变内透' },
+        { name:'如意连环', desc:`三块大小不一的${mainElem}形底板横向错落，每块UV打印${subElemStr}组合图案，中央最大板上嵌黄铜主题字"${theme}"${brandText}，底板间金色链条衔接`, mat:'PVC板UV打印+黄铜立体字+金属链条', lit:'侧光勾勒+金属反光' },
+        { name:'编钟古韵', desc:`多个编钟形板横向悬挂，钟面浮雕${mainElem}与${subElemStr}，钟钮装饰${mainElem}，背景深蓝纯色，暖黄灯光聚焦${brandText}主题"${theme}"`, mat:'泡沫仿青铜漆+红色UV背景板+金属悬挂件', lit:'聚焦暖光+轮廓光' },
+        { name:'龙凤呈祥', desc:`金色瑞兽与红色神鸟浮雕长卷横跨，神兽蜿蜒环绕${mainElem}，中心宝珠替换为发光主题字"${theme}"${brandText}，宝蓝底板衬托`, mat:'高密度泡沫浮雕+鎏金漆+中国红漆+铝塑板', lit:'轮廓光+内透光' },
+        { name:'纹样织锦', desc:`多种传统纹样（${allElems}）组成横向连续装饰带，每层色彩由深至浅渐变，中央镶嵌木质描金牌匾"${theme}"${brandText}`, mat:'多层PVC雕刻叠加+UV分层打印+木质描金牌匾', lit:'层间暗藏灯带' },
+        { name:'书卷吉祥', desc:`两侧书卷叠放造型，书卷书写吉祥诗句与${mainElem}图案，中央匾额高悬"${theme}"${brandText}，下方点缀${subElemStr}穗子`, mat:'泡沫仿古籍书卷+宣纸纹理UV+木质匾额+穗子', lit:'柔光漫射+微光点缀' },
+        { name:'花团锦簇', desc:`数百朵${mainElem}造型模块密拼构成花墙，花朵间点缀${subElemStr}小品，中心花朵颜色自然形成${brandText}主题字"${theme}"剪影`, mat:'高密度泡沫立体花+丝印+金属框架', lit:'内透柔光+花瓣轮廓' },
+        { name:'折扇宏开', desc:`巨型折扇完全打开横向布景，金色不锈钢扇骨，红色丝印扇面印${mainElem}与${subElemStr}纹样，扇柄立体${brandText}主题字"${theme}"`, mat:'不锈钢骨架+红色丝印布+金色PVC字', lit:'侧光强调扇骨+扇面柔光' },
+        { name:'皮影叙事', desc:`传统皮影戏元素，分层仿牛皮板切割${mainElem}故事场景，横向连续，背光处理，中央${brandText}主题"${theme}"如皮影幕布`, mat:'半透明亚克力激光切割+仿皮纹+LED背光', lit:'背光剪影+暖色透光' },
+        { name:'月洞穿景', desc:`多个圆形月洞门并排，青砖纹饰边框，洞内KT板营造深远景致含${subElemStr}造型，中间门洞悬挂${brandText}主题发光字"${theme}"`, mat:'木工板刷青砖漆+KT板景片+亚克力发光字', lit:'洞内柔光+门洞轮廓光' },
+        { name:'聚宝盆溢', desc:`横向拉长聚宝盆造型，盆内溢出${subElemStr}等吉祥宝物，盆壁浮雕${mainElem}，盆沿正中立${brandText}主题牌"${theme}"`, mat:'玻璃钢翻模+金色汽车漆+泡沫雕塑', lit:'盆内暖光+外轮廓光' },
+        { name:'鱼跃龙门', desc:`波浪纹与锦鲤跃动图案，蓝绿调海浪中锦鲤化龙，浪尖点缀${subElemStr}，${brandText}主题字"${theme}"立于浪花之上`, mat:'铝塑板UV打印+立体泡沫鲤鱼+水晶字', lit:'动态灯带模拟水流+轮廓光' },
+        { name:'中国结艺', desc:`盘长结为中心向两侧延伸${mainElem}结、${subElemStr}结，红色亚克力管制作，中间结内嵌入${brandText}主题字"${theme}"，米白绢布背景`, mat:'红色亚克力圆管热弯+喷绘绢布+金色立体字', lit:'结体内透柔光' },
+        { name:'飞檐翘角', desc:`仿古建筑屋檐斗拱横向延展，檐下悬挂风铃，檐板彩绘${mainElem}与${subElemStr}，中部匾额悬挂${brandText}主题"${theme}"`, mat:'木质斗拱彩绘+金属风铃+木刻描金匾额', lit:'暖黄洗墙灯+风铃反光' },
+        { name:'屏风叠翠', desc:`八块独立屏风板横向拼接轻微旋转，屏风面金箔描边绘制${subElemStr}，正中两块打开露出${brandText}主题立体字"${theme}"`, mat:'木芯板贴金箔+绢布UV打印+金属底座', lit:'屏风间透光+描边反光' },
+        { name:'剪纸层叠', desc:`传统剪纸叠加效果，多层红色镂空PVC板，首层${mainElem}窗花，二层${subElemStr}，三层发光底板，${brandText}主题"${theme}"镂空发光`, mat:'多层红色PVC激光镂空+白色亚克力背板+LED', lit:'背光透射+镂空光影' },
+      ];
+      const prompts = designs.map((d,i)=>{
+        return `【${String(i+1).padStart(2,'0')} ${d.name}】正立面视角，${series}·${subStyle}主题横向超宽美陈装置，${dims}，${structure||'岛台式'}结构，背景为${bg}，构图居中偏下留白≥30%。${d.desc}。色彩以${colors}为主，主色不超过3种，材质选用${d.mat}形成质感反差，灯光布局${d.lit}。内容侧重${contentType}，互动形式偏向${interactionPref}，故事线融入${story||'东方神话'}元素，支持${interact||'灯光感应'}，设计适配${time||'白天效果'}展示，预算${budget||'中预算'}，安装要求${install||'可拆卸'}。画面具有明确视觉锚点适合打卡拍照，写实3D效果图，16:9画幅，8k，正面完整展示，无透视变形。`;
+      });
+      return {prompts, designs};
+    }
+
+    function renderPrompts(prompts, designs){
+      if(!prompts?.length){
+        promptsListDiv.innerHTML='<div class="prompt-item" style="background:#26241e;text-align:center;padding:40px;"><div class="prompt-number">🏮 ⚠️</div><div class="prompt-text" style="color:#aa9f84;">生成失败，请重试</div></div>';
+        countDisplay.innerText='0/20'; extraOutput.style.display='none'; return;
+      }
+      let html='';
+      prompts.forEach((p,i)=>{
+        const d=designs[i];
+        html+=`<div class="prompt-item">
+          <div class="prompt-number">🏮 第${i+1}组 · ${d.name}</div>
+          <div class="prompt-meta"><span class="meta-tag">📐 ${d.mat.split('+')[0]}</span><span class="meta-tag">💡 ${d.lit.split('+')[0]}</span></div>
+          <div class="prompt-text">${p}</div>
+          <button class="copy-btn" data-index="${i}">📋 复制</button>
+        </div>`;
+      });
+      promptsListDiv.innerHTML=html;
+      countDisplay.innerText=`${prompts.length}/20`;
+      setupCopyButtons();
+      const allMats=[...new Set(designs.map(d=>d.mat.split('+')[0].trim()))].slice(0,8).join('、');
+      const allLits=[...new Set(designs.map(d=>d.lit.split('+')[0].trim()))].slice(0,6).join('、');
+      extraContent.innerHTML=`📦 <b>主要材料类型：</b>${allMats}<br>💡 <b>灯光系统汇总：</b>${allLits}<br>🔧 <b>安装建议：</b>${selectedInstall} | <b>预算：</b>${selectedBudget}<br>🕐 <b>展示模式：</b>${selectedTime} | <b>互动玩法：</b>${selectedInteract}<br>📖 <b>故事线：</b>${selectedStory} | <b>结构：</b>${selectedStructure}<br>🎯 <b>品牌：</b>${brandInput.value||'未指定'} | <b>主题：</b>${themeInput.value}<br>📐 <b>尺寸：</b>宽${widthInput.value}米 × 高${heightInput.value}米 · 16:9`;
+      extraOutput.style.display='block';
+    }
+
+    function handleGenerate(){
+      const params={
+        brand: brandInput.value.trim(),
+        theme: themeInput.value.trim()||'纳福迎祥·富贵满堂',
+        series:selectedSeries, subStyle:selectedSubStyle, venue:selectedVenue,
+        elements:selectedElements, colors:selectedColor, material:selectedMaterial,
+        light:selectedLight, structure:selectedStructure,
+        interactionPref:selectedInteractionPref, contentType:selectedContentType,
+        story:selectedStory, interact:selectedInteract, budget:selectedBudget,
+        install:selectedInstall, time:selectedTime,
+        userW:parseFloat(widthInput.value), userH:parseFloat(heightInput.value)
+      };
+      setLoading();
+      setTimeout(()=>{
+        try{
+          const result=generatePrompts(params);
+          currentPrompts=result.prompts;
+          renderPrompts(result.prompts, result.designs);
+        }catch(e){
+          promptsListDiv.innerHTML=`<div class="prompt-item"><div class="prompt-number">🏮 ❌</div><div class="prompt-text">生成出错: ${e.message}</div></div>`;
+          countDisplay.innerText='0/20'; extraOutput.style.display='none';
+        }
+      },150);
+    }
+    generateBtn.addEventListener('click',handleGenerate);
+
+    function init(){
+      refreshAllButtons();
+      setupCollapse('materialHeader','materialBody');
+      setupCollapse('lightHeader','lightBody');
+      setupCollapse('advancedHeader','advancedBody');
+      document.getElementById('materialBody').classList.add('expanded');
+      document.getElementById('materialHeader').classList.add('open');
+      setTimeout(handleGenerate,300);
+    }
+    window.addEventListener('load',init);
+  })();
+</script>
+</body>
+</html>
